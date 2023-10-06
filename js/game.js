@@ -17,11 +17,17 @@ kid.src = "./images/idle/idle.png";
 
 const images = [];
 const idleImage = [];
+const jumpImages = [];
 idleImage.push(kid);
 for (let i = 1; i <= frameCount; i++) {
   const image = new Image();
   image.src = `./images/running/${i}.png`;
   images.push(image);
+}
+for (let i = 4; i <= 7; i++) {
+  const image = new Image();
+  image.src = `./images/jump/${i}.png`;
+  jumpImages.push(image);
 }
 
 let prince = new Player(X, Y, 10, 20, idleImage);
@@ -36,30 +42,27 @@ function animate(timestamp) {
   requestAnimationFrame(animate);
 }
 document.addEventListener("keydown", (event) => {
-  if (event.key == "ArrowRight") {
+  if (event.key == "ArrowRight" || event.key == "ArrowLeft") {
     isArrayRightPressed = true;
     prince.setAnimation(images);
     prince.move(event.key);
-    // animationInterval = setInterval(() => {
-    //   prince.updateAnimation();
-    // }, 100);
+  }
+  if (event.key == " ") {
+    isArrayRightPressed = true;
+    prince.setAnimation(jumpImages);
   }
 });
 document.addEventListener("keyup", (event) => {
-  if (event.key == "ArrowRight") {
+  if (
+    event.key == "ArrowRight" ||
+    event.key == "ArrowLeft" ||
+    event.key == " "
+  ) {
     isArrayRightPressed = false;
     prince.setAnimation(idleImage);
     clearInterval(animationInterval);
   }
 });
-
-// function runningAnimate() {
-//   console.log(currentFrame);
-//   currentFrame++;
-//   if (currentFrame >= 11) {
-//     currentFrame = 1;
-//   }
-// }
 
 Promise.all(
   images.map((image) => new Promise((resolve) => (image.onload = resolve)))

@@ -20,14 +20,14 @@ export default class Player extends entity {
       this.height
     );
   }
-  updateAnimation(isArrayRightPressed) {
-    console.log(this.currentFrame);
+  updateAnimation(isArrayRightPressed, totalImages) {
+    console.log(this.animationFrames.length);
     if (isArrayRightPressed) {
       if (gameFrame % 5 == 0) this.currentFrame++;
     }
     gameFrame++;
 
-    if (this.currentFrame > this.animationFrames.length) {
+    if (this.currentFrame > this.animationFrames.length - 1) {
       this.currentFrame = 0;
     }
   }
