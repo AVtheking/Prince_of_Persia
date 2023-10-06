@@ -8,7 +8,8 @@ const frameInterval = 100;
 const X = 50;
 const Y = 50;
 let animationInterval;
-let isPressed = false;
+// let isPressed = false;
+let isRightKeyPressed = false;
 let fighting_mode = false;
 let currentFrame = 1;
 let lastTimestamp = 0;
@@ -17,9 +18,9 @@ let kid = new Image();
 let fighter = new Image();
 let fight = new Image();
 
-kid.src = "./images/idle/idle.png";
+kid.src = "./images/idle/idle2.png";
 fighter.src = "./images/sword.png";
-fight.src = "./images/fight2.png";
+fight.src = "./images/12.png";
 
 const runningImages = [];
 const idleImage = [];
@@ -35,7 +36,7 @@ fillArray("running", 12, runningImages);
 fillArray("jump", 4, jumpImages);
 // fillArray("fighting", 10, fightingImages);
 
-let prince = new Player(X, Y, 10, 20, idleImage);
+let prince = new Player(X, Y, 15, 20, idleImage);
 
 function fillArray(folder, count, images) {
   for (let i = 1; i <= count; i++) {
@@ -46,21 +47,23 @@ function fillArray(folder, count, images) {
 }
 document.addEventListener("keydown", (event) => {
   if (event.key == "ArrowRight" || event.key == "ArrowLeft") {
-    isPressed = true;
-
+    // isPressed = true;
+    isRightKeyPressed = true;
     prince.setAnimation(runningImages);
     prince.move(event.key, 5);
   }
-  if (event.key == " " && !isPressed) {
-    isPressed = true;
 
-    prince.setAnimation(jumpImages);
-    prince.jump();
-  } else if (event.key == " " && isPressed) {
+  if (event.key == " " && isRightKeyPressed) {
     // isPressed = true;
     prince.jump(true);
     prince.setAnimation(jumpImages);
+  } else if (event.key == " ") {
+    // isPressed = true;
+
+    prince.setAnimation(jumpImages);
+    prince.jump();
   }
+
   if (event.key == "z" && !fighting_mode) {
     fighting_mode = true;
     prince.setAnimation(fightingMode_image);
@@ -68,33 +71,42 @@ document.addEventListener("keydown", (event) => {
     fighting_mode = false;
     prince.setAnimation(idleImage);
   }
-  if (event.key == "x") {
-    isPressed = true;
+
+  if (event.key == "x" && fighting_mode) {
+    // isPressed = true;
     prince.setAnimation(fightingImages);
   }
 });
 document.addEventListener("keyup", (event) => {
-  if (
-    event.key == "ArrowRight" ||
-    event.key == "ArrowLeft" ||
-    event.key == " "
-  ) {
-    isPressed = false;
-    prince.setAnimation(idleImage);
-    clearInterval(animationInterval);
+  if (event.key == "ArrowRight" || event.key == "ArrowLeft") {
+    // isPressed = false;
+    isRightKeyPressed = false;
+    if (fighting_mode) {
+      prince.setAnimation(fightingMode_image);
+    } else {
+      prince.setAnimation(idleImage);
+    }
+    // clearInterval(animationInterval);
+  }
+
+  if (event.key == " ") {
+    if (fighting_mode) {
+      prince.setAnimation(fightingMode_image);
+    } else {
+      prince.setAnimation(idleImage);
+    }
   }
   if (event.key == "x" && fighting_mode) {
-    isPressed = false;
+    // isPressed = false;
     prince.setAnimation(fightingMode_image);
-    clearInterval(animationInterval);
+    // clearInterval(animationInterval);
   }
 });
 function animate(timestamp) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   prince.draw(ctx);
-  prince.updateAnimation(isPressed);
+  prince.updateAnimation();
   if (prince.jumping) {
-    // prince.updateAnimation(isPressed);
     prince.y += 0.1;
     if (prince.y >= prince.initialY) {
       prince.y = prince.initialY;

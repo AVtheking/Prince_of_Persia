@@ -22,11 +22,11 @@ export default class Player extends entity {
       this.height
     );
   }
-  updateAnimation(isPressed) {
+  updateAnimation() {
     console.log(this.currentFrame);
-    if (isPressed) {
-      if (gameFrame % 20 == 0) this.currentFrame++;
-    }
+
+    if (gameFrame % 20 == 0) this.currentFrame++;
+
     gameFrame++;
 
     if (this.currentFrame > this.animationFrames.length - 1) {
