@@ -3,13 +3,15 @@ let gameFrame = 0;
 export default class Player extends entity {
   constructor(x, y, width, height, defaultImages) {
     super();
-    // this.player = player;
+
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
     this.animationFrames = defaultImages;
     this.currentFrame = 0;
+    this.jumping = false;
+    this.initialY = this.y;
   }
   draw(ctx) {
     ctx.drawImage(
@@ -20,10 +22,10 @@ export default class Player extends entity {
       this.height
     );
   }
-  updateAnimation(isArrayRightPressed, totalImages) {
-    console.log(this.animationFrames.length);
-    if (isArrayRightPressed) {
-      if (gameFrame % 5 == 0) this.currentFrame++;
+  updateAnimation(isPressed) {
+    console.log(this.currentFrame);
+    if (isPressed) {
+      if (gameFrame % 20 == 0) this.currentFrame++;
     }
     gameFrame++;
 
@@ -32,7 +34,7 @@ export default class Player extends entity {
     }
   }
   setAnimation(images) {
-    console.log("done");
+    // console.log("done");
     this.animationFrames = images;
     this.currentFrame = 0;
   }
@@ -50,6 +52,14 @@ export default class Player extends entity {
       case "ArrowDown":
         this.y += 5;
         break;
+    }
+  }
+  jump() {
+    if (!this.jumping) {
+      this.jumping = true;
+      this.initialY = this.y;
+      this.y -= 10;
+      this.x += 15;
     }
   }
 }
