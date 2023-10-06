@@ -19,7 +19,7 @@ let fight = new Image();
 
 kid.src = "./images/idle/idle.png";
 fighter.src = "./images/sword.png";
-fight.src = "./images/fight.png";
+fight.src = "./images/fight2.png";
 
 const runningImages = [];
 const idleImage = [];
@@ -32,30 +32,11 @@ fightingMode_image.push(fighter);
 fightingImages.push(fight);
 
 fillArray("running", 12, runningImages);
-fillArray("jump", 2, jumpImages);
+fillArray("jump", 4, jumpImages);
 // fillArray("fighting", 10, fightingImages);
 
-let prince = new Player(X, Y, 12, 20, idleImage);
+let prince = new Player(X, Y, 10, 20, idleImage);
 
-function animate(timestamp) {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  prince.draw(ctx);
-  prince.updateAnimation(isPressed);
-  if (prince.jumping) {
-    // prince.updateAnimation(isPressed);
-    prince.y += 0.3;
-    if (prince.y >= prince.initialY) {
-      prince.y = prince.initialY;
-      prince.jumping = false;
-    }
-  }
-
-  if (timestamp - lastTimestamp >= frameInterval) {
-    lastTimestamp = timestamp;
-  }
-
-  requestAnimationFrame(animate);
-}
 function fillArray(folder, count, images) {
   for (let i = 1; i <= count; i++) {
     const image = new Image();
@@ -66,8 +47,9 @@ function fillArray(folder, count, images) {
 document.addEventListener("keydown", (event) => {
   if (event.key == "ArrowRight" || event.key == "ArrowLeft") {
     isPressed = true;
+
     prince.setAnimation(runningImages);
-    prince.move(event.key);
+    prince.move(event.key, 5);
   }
   if (event.key == " " && !isPressed) {
     isPressed = true;
@@ -75,7 +57,9 @@ document.addEventListener("keydown", (event) => {
     prince.setAnimation(jumpImages);
     prince.jump();
   } else if (event.key == " " && isPressed) {
-    prince.setAnimation(idleImage);
+    // isPressed = true;
+    prince.jump(true);
+    prince.setAnimation(jumpImages);
   }
   if (event.key == "z" && !fighting_mode) {
     fighting_mode = true;
@@ -105,6 +89,25 @@ document.addEventListener("keyup", (event) => {
     clearInterval(animationInterval);
   }
 });
+function animate(timestamp) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  prince.draw(ctx);
+  prince.updateAnimation(isPressed);
+  if (prince.jumping) {
+    // prince.updateAnimation(isPressed);
+    prince.y += 0.1;
+    if (prince.y >= prince.initialY) {
+      prince.y = prince.initialY;
+      prince.jumping = false;
+    }
+  }
+
+  if (timestamp - lastTimestamp >= frameInterval) {
+    lastTimestamp = timestamp;
+  }
+
+  requestAnimationFrame(animate);
+}
 
 Promise.all(
   runningImages.map(

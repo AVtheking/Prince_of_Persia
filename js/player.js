@@ -38,28 +38,40 @@ export default class Player extends entity {
     this.animationFrames = images;
     this.currentFrame = 0;
   }
-  move(key) {
+  move(key, speed) {
+    const canvasWidth = canvas.width;
+    const canvasHeight = canvas.height;
+
     switch (key) {
       case "ArrowLeft":
-        this.x -= 5;
+        if (this.x - speed >= 0) {
+          this.x -= speed;
+        }
         break;
       case "ArrowRight":
-        this.x += 5;
+        if (this.x + this.width + speed <= canvasWidth) {
+          this.x += speed;
+        }
         break;
       case "ArrowUp":
-        this.y -= 5;
+        if (this.y - speed >= 0) {
+          this.y -= speed;
+        }
         break;
       case "ArrowDown":
-        this.y += 5;
+        if (this.y + this.height + speed <= canvasHeight) {
+          this.y += speed;
+        }
         break;
     }
   }
-  jump() {
+
+  jump(isMoving) {
     if (!this.jumping) {
       this.jumping = true;
       this.initialY = this.y;
       this.y -= 10;
-      this.x += 15;
+      if (isMoving) this.x += 15;
     }
   }
 }
