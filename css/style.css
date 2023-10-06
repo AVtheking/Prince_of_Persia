@@ -5,11 +5,13 @@ body{
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    
 }
 #canvas{
    top:50%;
    left:50%;
    border: 2px solid black;
-   width: 70%;
-   height: 70%;
+   width: 90%;
+   height: 90%;
+   background-color: black;
 }
