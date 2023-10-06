@@ -27,6 +27,7 @@ const idleImage = [];
 const jumpImages = [];
 const fightingImages = [];
 const fightingMode_image = [];
+const enemyImages = [];
 
 idleImage.push(kid);
 fightingMode_image.push(fighter);
@@ -34,9 +35,11 @@ fightingImages.push(fight);
 
 fillArray("running", 12, runningImages);
 fillArray("jump", 4, jumpImages);
+fillArray("enemy", 4, enemyImages);
 // fillArray("fighting", 10, fightingImages);
 
 let prince = new Player(X, Y, 15, 20, idleImage);
+let enemy = new Player(70, 50, 20, 20, enemyImages);
 
 function fillArray(folder, count, images) {
   for (let i = 1; i <= count; i++) {
@@ -104,10 +107,17 @@ document.addEventListener("keyup", (event) => {
 });
 function animate(timestamp) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  prince.draw(ctx);
+
+  // Update the game state for all objects (player and enemy)
+  enemy.updateAnimation();
   prince.updateAnimation();
+
+  // Draw all objects on the canvas
+  enemy.draw(ctx);
+  prince.draw(ctx);
+
   if (prince.jumping) {
-    prince.y += 0.1;
+    prince.y += 0.5;
     if (prince.y >= prince.initialY) {
       prince.y = prince.initialY;
       prince.jumping = false;

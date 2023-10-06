@@ -23,9 +23,9 @@ export default class Player extends entity {
     );
   }
   updateAnimation() {
-    console.log(this.currentFrame);
+    // console.log(this.currentFrame);
 
-    if (gameFrame % 20 == 0) this.currentFrame++;
+    if (gameFrame % 40 == 0) this.currentFrame++;
 
     gameFrame++;
 
