@@ -5,8 +5,8 @@ const ctx = canvas.getContext("2d");
 
 const frameCount = 12;
 const frameInterval = 100;
-const X = 50;
-const Y = 50;
+const X = 128;
+const Y = 268;
 let animationInterval;
 // let isPressed = false;
 let isRightKeyPressed = false;
@@ -38,8 +38,11 @@ fillArray("jump", 4, jumpImages);
 fillArray("enemy", 4, enemyImages);
 // fillArray("fighting", 10, fightingImages);
 
-let prince = new Player(X, Y, 15, 20, idleImage);
-let enemy = new Player(70, 50, 20, 20, enemyImages);
+export let prince = new Player(X, Y, 15, 20, idleImage);
+export let enemy = new Player(656, 268, 20, 20, enemyImages);
+export let enemy2 = new Player(400, 268, 20, 20, enemyImages);
+export let enemy3 = new Player(816, 268, 20, 20, enemyImages);
+export let enemy4 = new Player(400, 268, 20, 20, enemyImages);
 
 function fillArray(folder, count, images) {
   for (let i = 1; i <= count; i++) {
@@ -107,13 +110,17 @@ document.addEventListener("keyup", (event) => {
 });
 function animate(timestamp) {
   // ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+  console.log(prince.x);
   // Update the game state for all objects (player and enemy)
   enemy.updateAnimation();
+  enemy2.updateAnimation();
+  enemy3.updateAnimation();
   prince.updateAnimation();
 
   // Draw all objects on the canvas
   enemy.draw(ctx);
+  enemy2.draw(ctx);
+  enemy3.draw(ctx);
   prince.draw(ctx);
 
   if (prince.jumping) {
@@ -123,7 +130,7 @@ function animate(timestamp) {
       prince.jumping = false;
     }
   }
-
+  console.log(canvas.width);
   if (timestamp - lastTimestamp >= frameInterval) {
     lastTimestamp = timestamp;
   }
