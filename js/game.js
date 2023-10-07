@@ -35,6 +35,8 @@ const enemyImages = [];
 const blockSizeX = 32;
 const blockSizeY = 32;
 let collisionBelow = false;
+let collisonForward = false;
+let collisionUp = false;
 
 idleImage.push(kid);
 fightingMode_image.push(fighter);
@@ -45,10 +47,10 @@ fillArray("jump", 4, jumpImages);
 fillArray("enemy", 4, enemyImages);
 
 export let prince = new Player(X, Y, 20, 25, idleImage);
-export let enemy = new Player(656, 268, 25, 25, enemyImages);
-export let enemy2 = new Player(400, 268, 25, 25, enemyImages);
-export let enemy3 = new Player(816, 268, 25, 25, enemyImages);
-export let enemy4 = new Player(400, 268, 25, 25, enemyImages);
+export let enemy = new Player(656, 263, 25, 25, enemyImages);
+export let enemy2 = new Player(400, 263, 25, 25, enemyImages);
+export let enemy3 = new Player(816, 263, 25, 25, enemyImages);
+export let enemy4 = new Player(400, 263, 25, 25, enemyImages);
 
 function fillArray(folder, count, images) {
   for (let i = 1; i <= count; i++) {
@@ -71,56 +73,38 @@ collisionMap.forEach((row, i) => {
       );
   });
 });
+function checkCollisions(X, Y) {
+  let isCollision = false;
+  for (let i = 0; i < boundaries.length; i++) {
+    const boundary = boundaries[i];
+    if (
+      objectCollision({
+        object1: prince,
+        object2: {
+          ...boundary,
+          position: {
+            x: boundary.position.x + X,
+            y: boundary.position.y + Y,
+          },
+        },
+      })
+    ) {
+      isCollision = true;
+      break;
+    }
+  }
+  return isCollision;
+}
 //Movements
 document.addEventListener("keydown", (event) => {
   if (event.key == "ArrowRight") {
-    // Right movement logic
-    for (let i = 0; i < boundaries.length; i++) {
-      const boundary = boundaries[i];
-      if (
-        objectCollision({
-          object1: prince,
-          object2: {
-            ...boundary,
-            position: {
-              x: boundary.position.x - 5,
-              y: boundary.position.y,
-            },
-          },
-        })
-      ) {
-        console.log("colliding right");
-        collidingRight = true;
-        break;
-      }
-    }
-    if (!collidingRight) {
+    if (!checkCollisions(-5, 0)) {
       isRightKeyPressed = true;
       prince.setAnimation(runningImages);
       prince.move(event.key, 5);
     }
   } else if (event.key == "ArrowLeft") {
-    // Left movement logic
-    for (let i = 0; i < boundaries.length; i++) {
-      const boundary = boundaries[i];
-      if (
-        objectCollision({
-          object1: prince,
-          object2: {
-            ...boundary,
-            position: {
-              x: boundary.position.x + 5,
-              y: boundary.position.y,
-            },
-          },
-        })
-      ) {
-        console.log("colliding left");
-        collidingLeft = true;
-        break;
-      }
-    }
-    if (!collidingLeft) {
+    if (!checkCollisions(5, 0)) {
       isRightKeyPressed = true;
       prince.setAnimation(runningImages);
       prince.move(event.key, 5);
@@ -128,11 +112,15 @@ document.addEventListener("keydown", (event) => {
   }
 
   if (event.key == " " && isRightKeyPressed) {
-    prince.jump(true);
-    prince.setAnimation(jumpImages);
+    if (!checkCollisions(-32, 32)) {
+      prince.jump(true);
+      prince.setAnimation(jumpImages);
+    }
   } else if (event.key == " ") {
-    prince.setAnimation(jumpImages);
-    prince.jump();
+    if (!checkCollisions(0, 32)) {
+      prince.setAnimation(jumpImages);
+      prince.jump();
+    }
   }
 
   if (event.key == "z" && !fighting_mode) {
@@ -160,6 +148,7 @@ document.addEventListener("keyup", (event) => {
   }
 
   if (event.key == " ") {
+    collisonForward = false;
     if (fighting_mode) {
       prince.setAnimation(fightingMode_image);
     } else {
@@ -182,25 +171,8 @@ function animate(timestamp) {
   enemy2.draw(ctx);
   enemy3.draw(ctx);
   prince.draw(ctx);
-  for (let i = 0; i < boundaries.length; i++) {
-    const boundary = boundaries[i];
-    if (
-      objectCollision({
-        object1: prince,
-        object2: {
-          ...boundary,
-          position: {
-            x: boundary.position.x,
-            y: boundary.position.y - 1,
-          },
-        },
-      })
-    ) {
-      collisionBelow = true;
-      break;
-    }
-  }
-  if (!collisionBelow) {
+
+  if (!checkCollisions(0, -1)) {
     prince.y += 0.5;
   } else {
     prince.jumping = false;
