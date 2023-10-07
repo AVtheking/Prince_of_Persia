@@ -106,7 +106,7 @@ document.addEventListener("keyup", (event) => {
   }
 });
 function animate(timestamp) {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // Update the game state for all objects (player and enemy)
   enemy.updateAnimation();
