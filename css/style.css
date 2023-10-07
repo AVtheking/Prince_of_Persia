@@ -1,17 +1,14 @@
 body{
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    
+    background-color: rgb(17, 17, 17);
 }
+
 #canvas{
-   top:50%;
-   left:50%;
-   border: 2px solid black;
-   width: 90%;
-   height: 90%;
-   background-color: black;
+    position: absolute;
+   /* background-color: aliceblue;*/
+    border: 2px solid white;
+    width: 800px;
+    height: 700px;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
 }
