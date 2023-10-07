@@ -70,8 +70,8 @@ export default class Player extends entity {
     if (!this.jumping) {
       this.jumping = true;
       this.initialY = this.y;
-      this.y -= 40;
-      if (isMoving) this.x += 40;
+      this.y -= 32;
+      if (isMoving) this.x += 32;
     }
   }
 }
