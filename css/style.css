@@ -14,3 +14,25 @@ body{
     top: 50%;
     left: 50%;
 }
+
+
+#first{
+    height: 500px;
+    width: 700px;
+    background-color: rgb(182, 114, 69);
+    position: absolute;
+    left: 25%;
+    top: 15%;
+}
+
+img{
+    height: 480px;
+    width: 680px;
+    margin: 10px;
+}
+.button{
+    top: 35%;
+    background-color: burlywood;
+    color: cadetblue;
+    display: inline;
+}
