@@ -9,7 +9,7 @@ export default class Boundary {
   constructor({ position }) {
     this.position = position;
     this.width = 32;
-    this.height = 10;
+    this.height = 32;
   }
   drawRect() {
     ctx.fillStyle = "red";

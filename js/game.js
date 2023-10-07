@@ -83,7 +83,7 @@ document.addEventListener("keydown", (event) => {
           object2: {
             ...boundary,
             position: {
-              x: boundary.position.x + 30,
+              x: boundary.position.x - 5,
               y: boundary.position.y,
             },
           },
@@ -109,7 +109,7 @@ document.addEventListener("keydown", (event) => {
           object2: {
             ...boundary,
             position: {
-              x: boundary.position.x - 5,
+              x: boundary.position.x + 5,
               y: boundary.position.y,
             },
           },
@@ -150,7 +150,8 @@ document.addEventListener("keydown", (event) => {
 document.addEventListener("keyup", (event) => {
   if (event.key == "ArrowRight" || event.key == "ArrowLeft") {
     isRightKeyPressed = false;
-    colliding = false;
+    collidingRight = false;
+    collidingLeft = false;
     if (fighting_mode) {
       prince.setAnimation(fightingMode_image);
     } else {
