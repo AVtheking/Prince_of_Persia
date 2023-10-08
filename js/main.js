@@ -21,7 +21,7 @@ function animate() {
     boundary.drawRect();
   });
 
-  if (canvas.width - prince.x <= 50) {
+  if (canvas.width - prince.x <= 150) {
     gamespeed = 100;
   } else if (prince.x <= 50) {
     gamespeed = -100;
@@ -29,14 +29,14 @@ function animate() {
     gamespeed = 0;
   }
 
-  if (x < -2400) x = 2400 - gamespeed;
+  if (x == -2200) x = -2200;
   else {
+    prince.x -= gamespeed;
     x -= gamespeed;
     movables.forEach((movable) => {
       movable.position.x -= gamespeed;
     });
     // testBoundary.position.x -= gamespeed;
-    prince.x -= gamespeed;
     enemy.x -= gamespeed;
     enemy2.x -= gamespeed;
     enemy3.x -= gamespeed;
