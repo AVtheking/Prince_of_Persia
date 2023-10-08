@@ -14,9 +14,10 @@ let isRightKeyPressed = false;
 let fighting_mode = false;
 let currentFrame = 1;
 let lastTimestamp = 0;
-let colliding = false;
-let collidingRight = false;
-let collidingLeft = false;
+let prince_health = 50;
+let enemy_health = 5;
+let enemy2_health = 5;
+let enemy3_health = 5;
 
 let kid = new Image();
 let fighter = new Image();
@@ -52,13 +53,16 @@ export let enemy2 = new Player(400, 263, 25, 25, enemyImages);
 export let enemy3 = new Player(816, 263, 25, 25, enemyImages);
 export let enemy4 = new Player(400, 263, 25, 25, enemyImages);
 
-function fillArray(folder, count, images) {
-  for (let i = 1; i <= count; i++) {
-    const image = new Image();
-    image.src = `./images/${folder}/${i}.png`;
-    images.push(image);
-  }
+const activeEnemies = [enemy, enemy2, enemy3, enemy4];
+for (const enemy of activeEnemies) {
+  enemy.health = 20;
 }
+
+// enemy.health = 10;
+// enemy2.health = 10;
+// enemy3.health = 10;
+// enemy4.health = 10;
+
 export const boundaries = [];
 collisionMap.forEach((row, i) => {
   row.forEach((block, j) => {
@@ -73,6 +77,13 @@ collisionMap.forEach((row, i) => {
       );
   });
 });
+function fillArray(folder, count, images) {
+  for (let i = 1; i <= count; i++) {
+    const image = new Image();
+    image.src = `./images/${folder}/${i}.png`;
+    images.push(image);
+  }
+}
 function checkCollisions(X, Y) {
   let isCollision = false;
   for (let i = 0; i < boundaries.length; i++) {
@@ -95,6 +106,12 @@ function checkCollisions(X, Y) {
   }
   return isCollision;
 }
+function calculateDistance(x1, y1, x2, y2) {
+  const dx = x1 - x2;
+  const dy = y1 - y2;
+  return Math.sqrt(dx * dx + dy * dy);
+}
+
 //Movements
 document.addEventListener("keydown", (event) => {
   if (event.key == "ArrowRight") {
@@ -132,14 +149,34 @@ document.addEventListener("keydown", (event) => {
   }
 
   if (event.key == "x" && fighting_mode) {
+    let nearestEnemy = null;
+    let nearestDistance = Infinity;
+    // const allEnemies = [enemy, enemy2, enemy3, enemy4];
+    for (const currentEnemy of activeEnemies) {
+      const distance = calculateDistance(
+        prince.x,
+        prince.y,
+        currentEnemy.x,
+        currentEnemy.y
+      );
+      const relativeX = currentEnemy.x - prince.x;
+
+      if (relativeX > 0 && relativeX <= 32 && distance < nearestDistance) {
+        nearestEnemy = currentEnemy;
+        nearestDistance = distance;
+      }
+    }
+    // prince.health -= 2;
+    // nearestEnemy.health -= 5;
+    prince.attack(nearestEnemy);
     prince.setAnimation(fightingImages);
   }
 });
+
 document.addEventListener("keyup", (event) => {
   if (event.key == "ArrowRight" || event.key == "ArrowLeft") {
     isRightKeyPressed = false;
-    collidingRight = false;
-    collidingLeft = false;
+
     if (fighting_mode) {
       prince.setAnimation(fightingMode_image);
     } else {
@@ -159,17 +196,35 @@ document.addEventListener("keyup", (event) => {
     prince.setAnimation(fightingMode_image);
   }
 });
+
 function animate(timestamp) {
   // ctx.clearRect(0, 0, canvas.width, canvas.height);
-  collisionBelow = false;
-  enemy.updateAnimation();
-  enemy2.updateAnimation();
-  enemy3.updateAnimation();
-  prince.updateAnimation();
+  console.log(prince.health);
 
-  enemy.draw(ctx);
-  enemy2.draw(ctx);
-  enemy3.draw(ctx);
+  collisionBelow = false;
+  for (const enemy of activeEnemies) {
+    enemy.updateAnimation();
+    enemy.draw(ctx);
+
+    if (enemy.health <= 0) {
+      const index = activeEnemies.indexOf(enemy);
+      if (index !== -1) {
+        activeEnemies.splice(index, 1);
+      }
+    }
+  }
+  prince.updateAnimation();
+  for (const enemy of activeEnemies) {
+    const distance = calculateDistance(prince.x, prince.y, enemy.x, enemy.y);
+
+    // Calculate relative X position
+    const relativeX = enemy.x - prince.x;
+
+    if (relativeX > 0 && relativeX <= 10 && distance <= 10) {
+      prince.health -= 0.1; // Adjust the health decrease rate as needed
+    }
+  }
+
   prince.draw(ctx);
 
   if (!checkCollisions(0, -1)) {
