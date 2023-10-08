@@ -1,10 +1,32 @@
 body{
     background-color: rgb(17, 17, 17);
     margin: 0;
-    padding: 50%;
+    padding: 25px;
     overflow: hidden;
+    box-sizing: border-box; 
 }
+ul{
+    display: flex;
+   
+    list-style-type: none;
+    
+}.gameControls{
+    display: flex;
 
+    width: 100vw;
+    height: 5vh;
+    background: transparent;
+   
+    
+}.hearts{
+    height: 30px;
+    width: 30px;
+ 
+    border-radius: 50px;
+    margin-right: 1vw;
+    opacity: 1;
+
+}
 #canvas{
     position: absolute;
    /* background-color: aliceblue;*/
@@ -12,26 +34,12 @@ body{
     width: 800px;
     height: 80%;
     transform: translate(-50%, -50%);
+    margin-top: 10px;
     top: 50%;
     left: 50%;
 }
 
-#audio{
-    display: flex;
-    background-color: rgb(15, 15, 15);
-    height: 30px;
-    gap: 10px;
-    padding: 10px;
-}
 
-#audio-on,#audio-off{
-    background-color: bisque;
-    width: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-}
 
 
 
@@ -65,9 +73,6 @@ img{
     
     
 }
-a{
-    text-decoration: none;
-}
 
 #one{
     border: 50px solid rgb(114, 77, 45);
@@ -85,7 +90,7 @@ a{
     padding-left: 30px;
 }
 
-/*box*/
+
 .box{
     height: 250px;
     width: 200px;
@@ -93,6 +98,7 @@ a{
    position: absolute;
    top: 30vh;
    left: 30px;
+   display: block;
 }
 .move{
     font-size: 1rem;
@@ -104,4 +110,39 @@ a{
 span{
     color: rgb(93, 161, 161);
     background-color: rgb(2, 2, 2);
+}
+
+.health-bar{
+    height: 50px;
+    width: 100vw;
+    background-color: transparent;
+    position: absolute;
+    top: 1%;
+    left: 1%;
+    margin: 10px;
+    display: flex;
+    gap: 10px;
+   
+}
+
+.heart{
+    height: 30px;
+    width: 30px;
+}.health{
+    color: white;
+    font-size: 30px;
+    margin-top: 10px;
+}.gameOverScreen{
+    display: none;
+    text-align: center;
+  
+    margin: 10vh 30vw;
+    padding: 5%;
+    background-color: transparent;
+}.head-2{
+    color: aliceblue;
+    filter: blur(0.5px);
+    font-size: 55px;
+   
+   
 }
