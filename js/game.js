@@ -50,9 +50,9 @@ fillArray("jump", 4, jumpImages);
 fillArray("enemy", 4, enemyImages);
 
 export let prince = new Player(X, Y, 20, 25, idleImage);
-export let enemy = new Player(656, 240, 25, 60, enemyImages);
-export let enemy2 = new Player(329, 240, 25, 60, enemyImages);
-export let enemy3 = new Player(816, 240, 25, 60, enemyImages);
+export let enemy = new Player(656, 263, 25, 25, enemyImages);
+export let enemy2 = new Player(329, 263, 25, 25, enemyImages);
+export let enemy3 = new Player(816, 263, 25, 25, enemyImages);
 export let enemy5 = new Player(1200, 263, 25, 25, enemyImages);
 export let enemy6 = new Player(1450, 263, 25, 25, enemyImages);
 export let enemy7 = new Player(1650, 263, 25, 25, enemyImages);
@@ -198,7 +198,7 @@ document.addEventListener("keydown", (event) => {
   }
 
   if (event.key == " " && isRightKeyPressed) {
-    if (!checkCollisions(-40, 40) && !isEnemyInFrontOfPrince(10)) {
+    if (!checkCollisions(-40, 40)) {
       if (jumpCount < 2) {
         prince.jump(true);
         prince.setAnimation(jumpImages);
