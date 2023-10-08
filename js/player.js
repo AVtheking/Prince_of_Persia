@@ -12,6 +12,7 @@ export default class Player extends entity {
     this.currentFrame = 0;
     this.jumping = false;
     this.initialY = this.y;
+    this.health = 50;
   }
   draw(ctx) {
     ctx.drawImage(
@@ -25,7 +26,7 @@ export default class Player extends entity {
   updateAnimation() {
     // console.log(this.currentFrame);
 
-    if (gameFrame % 40 == 0) this.currentFrame++;
+    if (gameFrame % 50 == 0) this.currentFrame++;
 
     gameFrame++;
 
@@ -73,5 +74,14 @@ export default class Player extends entity {
       this.y -= 32;
       if (isMoving) this.x += 32;
     }
+  }
+  attack(target) {
+    // Reduce the target's health
+    if (target instanceof Player) {
+      target.health -= 5; // Reduce enemy's health by 5
+    }
+
+    // Reduce the player's health (assuming player has a health property)
+    // this.health -= 2; // Reduce the player's health by 2
   }
 }
