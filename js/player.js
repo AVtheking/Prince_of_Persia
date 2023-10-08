@@ -12,7 +12,7 @@ export default class Player extends entity {
     this.currentFrame = 0;
     this.jumping = false;
     this.initialY = this.y;
-    this.health = 50;
+    this.health = 500;
   }
   draw(ctx) {
     ctx.drawImage(
@@ -25,9 +25,9 @@ export default class Player extends entity {
   }
   updateAnimation(object) {
     // console.log(this.currentFrame);
-    console.log(object);
+    // console.log(object);
 
-    if (gameFrame % 6 == 0) this.currentFrame++;
+    if (gameFrame % 40 == 0) this.currentFrame++;
 
     gameFrame++;
 
@@ -72,7 +72,7 @@ export default class Player extends entity {
     if (!this.jumping) {
       this.jumping = true;
       this.initialY = this.y;
-      this.y -= 32;
+      this.y -= 42;
       if (isMoving) this.x += 32;
     }
   }

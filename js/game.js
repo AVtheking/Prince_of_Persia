@@ -5,6 +5,13 @@ import Player from "./player.js";
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
+let hearts = document.getElementsByClassName("heart");
+let heading = document.getElementById("head-2");
+let paragraph = document.getElementById("para");
+let gameOverScreen = document.getElementById("gameOverScreen");
+let box = document.getElementById("box");
+let health_bar = document.getElementById("health-bar");
+
 const frameCount = 12;
 const frameInterval = 100;
 const X = 137;
@@ -55,7 +62,7 @@ export let enemy2 = new Player(329, 263, 25, 25, enemyImages);
 export let enemy3 = new Player(816, 263, 25, 25, enemyImages);
 export let enemy4 = new Player(1000, 263, 25, 25, enemyImages);
 
-const activeEnemies = [enemy, enemy2, enemy3, enemy4];
+let activeEnemies = [enemy, enemy2, enemy3, enemy4];
 for (const enemy of activeEnemies) {
   enemy.health = 20;
 }
@@ -84,6 +91,54 @@ function fillArray(folder, count, images) {
     const image = new Image();
     image.src = `./images/${folder}/${i}.png`;
     images.push(image);
+  }
+}
+function resetPrincePosition() {
+  prince.x = X;
+  prince.y = Y;
+}
+
+function gameOver() {
+  canvas.style.display = "none";
+  box.style.display = "none";
+  health_bar.style.display = "none";
+  gameOverScreen.style.display = "block";
+  heading.style.fontSize = "45px";
+  heading.style.color = "white";
+  paragraph.style.fontSize = "34px";
+  paragraph.style.color = "white";
+  document.addEventListener("keypress", (event) => {
+    location.reload();
+    // prince.health = 500;
+    // gameOverScreen.style.display = "none";
+    // canvas.style.display = "block";
+    // box.style.display = "block";
+    // health_bar.style.display = "block";
+    // ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // hearts[0].style.opacity = 1;
+    // hearts[1].style.opacity = 1;
+    // hearts[2].style.opacity = 1;
+    // hearts[3].style.opacity = 1;
+    // hearts[4].style.opacity = 1;
+  });
+}
+function damage() {
+  prince.health -= 1;
+  if (prince.health == 400) {
+    hearts[4].style.opacity = 0;
+  }
+  if (prince.health == 300) {
+    hearts[3].style.opacity = 0;
+  }
+  if (prince.health == 200) {
+    hearts[2].style.opacity = 0;
+  }
+  if (prince.health == 100) {
+    hearts[1].style.opacity = 0;
+  }
+  if (prince.health == 0) {
+    hearts[0].style.opacity = 0;
+    gameOver();
   }
 }
 function checkCollisions(X, Y) {
@@ -225,7 +280,13 @@ document.addEventListener("keyup", (event) => {
 
 function animate(timestamp) {
   // ctx.clearRect(0, 0, canvas.width, canvas.height);
-  console.log(prince.health);
+  if (prince.x >= 259) {
+    window.location.href = "./end-page.html";
+  }
+  console.log(prince.x);
+  if (prince.y >= canvas.height - 20) {
+    gameOver();
+  }
 
   collisionBelow = false;
   for (const enemy of activeEnemies) {
@@ -247,7 +308,7 @@ function animate(timestamp) {
     const relativeX = enemy.x - prince.x;
 
     if (relativeX > 0 && relativeX <= 10 && distance <= 10) {
-      prince.health -= 0.1;
+      damage();
     }
   }
 
