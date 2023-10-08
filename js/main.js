@@ -6,6 +6,8 @@ import {
   enemy5,
   enemy6,
   enemy7,
+  enemy8,
+  enemy9,
   prince,
 } from "./game.js";
 
@@ -25,7 +27,7 @@ const movables = [...boundaries];
 function animate() {
   ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   ctx.drawImage(backgroundLayer1, x, 0);
-  console.log(x);
+  // console.log(x);
   boundaries.forEach((boundary) => {
     boundary.drawRect();
   });
@@ -52,6 +54,8 @@ function animate() {
     enemy5.x -= gamespeed;
     enemy6.x -= gamespeed;
     enemy7.x -= gamespeed;
+    enemy8.x -= gamespeed;
+    enemy9.x -= gamespeed;
   }
 
   requestAnimationFrame(animate);

@@ -19,6 +19,7 @@ const Y = 263;
 let isRightKeyPressed = false;
 let fighting_mode = false;
 let lastTimestamp = 0;
+let jumpCount = 0;
 
 let kid = new Image();
 let fighter = new Image();
@@ -49,14 +50,25 @@ fillArray("jump", 4, jumpImages);
 fillArray("enemy", 4, enemyImages);
 
 export let prince = new Player(X, Y, 20, 25, idleImage);
-export let enemy = new Player(656, 263, 25, 25, enemyImages);
-export let enemy2 = new Player(329, 263, 25, 25, enemyImages);
-export let enemy3 = new Player(816, 263, 25, 25, enemyImages);
+export let enemy = new Player(656, 240, 25, 60, enemyImages);
+export let enemy2 = new Player(329, 240, 25, 60, enemyImages);
+export let enemy3 = new Player(816, 240, 25, 60, enemyImages);
 export let enemy5 = new Player(1200, 263, 25, 25, enemyImages);
 export let enemy6 = new Player(1450, 263, 25, 25, enemyImages);
 export let enemy7 = new Player(1650, 263, 25, 25, enemyImages);
+export let enemy8 = new Player(1800, 263, 25, 25, enemyImages);
+export let enemy9 = new Player(2046, 166, 25, 25, enemyImages);
 
-let activeEnemies = [enemy, enemy2, enemy3, enemy5, enemy6, enemy7];
+let activeEnemies = [
+  enemy,
+  enemy2,
+  enemy3,
+  enemy5,
+  enemy6,
+  enemy7,
+  enemy8,
+  enemy9,
+];
 for (const enemy of activeEnemies) {
   enemy.health = 20;
 }
@@ -99,7 +111,7 @@ function gameOver() {
   paragraph.style.fontSize = "34px";
   paragraph.style.color = "white";
   document.addEventListener("keypress", (event) => {
-    location.reload();
+    if (event.key == "Enter") location.reload();
   });
 }
 function damage() {
@@ -138,6 +150,7 @@ function checkCollisions(X, Y) {
       })
     ) {
       isCollision = true;
+
       break;
     }
   }
@@ -185,14 +198,25 @@ document.addEventListener("keydown", (event) => {
   }
 
   if (event.key == " " && isRightKeyPressed) {
-    if (!checkCollisions(-40, 40)) {
-      prince.jump(true);
-      prince.setAnimation(jumpImages);
+    if (!checkCollisions(-40, 40) && !isEnemyInFrontOfPrince(10)) {
+      if (jumpCount < 2) {
+        prince.jump(true);
+        prince.setAnimation(jumpImages);
+        jumpCount++;
+      } else {
+        prince.jumping = true;
+        jumpCount = 0;
+      }
     }
   } else if (event.key == " ") {
     if (!checkCollisions(0, 40)) {
-      prince.setAnimation(jumpImages);
-      prince.jump();
+      if (jumpCount < 2) {
+        prince.setAnimation(jumpImages);
+        prince.jump();
+        jumpCount++;
+      } else {
+        prince.jumping = true;
+      }
     }
   }
 
@@ -221,7 +245,7 @@ document.addEventListener("keydown", (event) => {
       );
       const relativeX = currentEnemy.x - prince.x;
 
-      if (relativeX > 0 && relativeX <= 10 && distance < nearestDistance) {
+      if (relativeX > 0 && relativeX <= 15 && distance < nearestDistance) {
         nearestEnemy = currentEnemy;
         nearestDistance = distance;
       }
@@ -263,7 +287,7 @@ function animate(timestamp) {
     // game_won.play();
     window.location.href = "./end-page.html";
   }
-  console.log(prince.x);
+  // console.log(prince.x);
   if (prince.y >= canvas.height - 20) {
     gameOver();
   }
@@ -286,7 +310,7 @@ function animate(timestamp) {
 
     const relativeX = enemy.x - prince.x;
 
-    if (relativeX > 0 && relativeX <= 10 && distance <= 10) {
+    if (relativeX > 0 && relativeX <= 14 && distance <= 14) {
       damage();
     }
   }
@@ -298,15 +322,17 @@ function animate(timestamp) {
   } else {
     prince.jumping = false;
     prince.velocityY = 0;
+    jumpCount = 0;
   }
 
-  if (prince.jumping) {
-    prince.y += 0.1;
-    if (prince.y >= prince.initialY) {
-      prince.y = prince.initialY;
-      prince.jumping = false;
-    }
-  }
+  // if (prince.jumping) {
+  //   prince.y += 0.1;
+  //   if (prince.y >= prince.initialY) {
+  //     prince.y = prince.initialY;
+  //     prince.jumping = false;
+  //     jumpCount = 0;
+  //   }
+  // }
 
   if (timestamp - lastTimestamp >= frameInterval) {
     lastTimestamp = timestamp;
