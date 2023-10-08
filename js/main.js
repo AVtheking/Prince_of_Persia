@@ -1,4 +1,13 @@
-import { boundaries, enemy, enemy2, enemy3, prince } from "./game.js";
+import {
+  boundaries,
+  enemy,
+  enemy2,
+  enemy3,
+  enemy5,
+  enemy6,
+  enemy7,
+  prince,
+} from "./game.js";
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
@@ -22,9 +31,9 @@ function animate() {
   });
 
   if (canvas.width - prince.x <= 150) {
-    gamespeed = 100;
+    gamespeed = 50;
   } else if (prince.x <= 50) {
-    gamespeed = -100;
+    gamespeed = -50;
   } else {
     gamespeed = 0;
   }
@@ -40,6 +49,9 @@ function animate() {
     enemy.x -= gamespeed;
     enemy2.x -= gamespeed;
     enemy3.x -= gamespeed;
+    enemy5.x -= gamespeed;
+    enemy6.x -= gamespeed;
+    enemy7.x -= gamespeed;
   }
 
   requestAnimationFrame(animate);

@@ -40,13 +40,10 @@ const jumpImages = [];
 const fightingImages = [];
 const fightingMode_image = [];
 const enemyImages = [];
-const blockSizeX = 32;
-const blockSizeY = 32;
-let collisionBelow = false;
-let collisonForward = false;
-let collisionUp = false;
+
 let walking_sound = new Audio("../Sound/walking2.mp3");
 let fight_sound = new Audio("../Sound/fight.mp3");
+let game_over = new Audio("../Sound/ending.wav");
 
 idleImage.push(kid);
 fightingMode_image.push(fighter);
@@ -60,9 +57,11 @@ export let prince = new Player(X, Y, 20, 25, idleImage);
 export let enemy = new Player(656, 263, 25, 25, enemyImages);
 export let enemy2 = new Player(329, 263, 25, 25, enemyImages);
 export let enemy3 = new Player(816, 263, 25, 25, enemyImages);
-export let enemy4 = new Player(1000, 263, 25, 25, enemyImages);
+export let enemy5 = new Player(1200, 263, 25, 25, enemyImages);
+export let enemy6 = new Player(1500, 263, 25, 25, enemyImages);
+export let enemy7 = new Player(1650, 263, 25, 25, enemyImages);
 
-let activeEnemies = [enemy, enemy2, enemy3, enemy4];
+let activeEnemies = [enemy, enemy2, enemy3, enemy5, enemy6, enemy7];
 for (const enemy of activeEnemies) {
   enemy.health = 20;
 }
@@ -99,6 +98,9 @@ function resetPrincePosition() {
 }
 
 function gameOver() {
+  // game_over.pause();
+  // game_over.currentTime = 0;
+  game_over.play();
   canvas.style.display = "none";
   box.style.display = "none";
   health_bar.style.display = "none";
@@ -172,7 +174,6 @@ function isEnemyInFrontOfPrince(distanceThreshold) {
   for (const enemy of activeEnemies) {
     const distance = calculateDistance(prince.x, prince.y, enemy.x, enemy.y);
 
-    // Calculate relative X position
     const relativeX = enemy.x - prince.x;
 
     if (
@@ -180,38 +181,38 @@ function isEnemyInFrontOfPrince(distanceThreshold) {
       relativeX <= distanceThreshold &&
       distance <= distanceThreshold
     ) {
-      return true; // An enemy is in front of the prince
+      return true;
     }
   }
-  return false; // No enemy in front of the prince
+  return false;
 }
 
 //Movements
 document.addEventListener("keydown", (event) => {
   if (event.key == "ArrowRight") {
-    if (!checkCollisions(-5, 0) && !isEnemyInFrontOfPrince(10)) {
+    if (!checkCollisions(-3, 0) && !isEnemyInFrontOfPrince(10)) {
       walking_sound.pause();
       walking_sound.currentTime = 0;
       walking_sound.play();
       isRightKeyPressed = true;
       prince.setAnimation(runningImages);
-      prince.move(event.key, 5);
+      prince.move(event.key, 3);
     }
   } else if (event.key == "ArrowLeft") {
-    if (!checkCollisions(5, 0)) {
+    if (!checkCollisions(3, 0)) {
       isRightKeyPressed = true;
       prince.setAnimation(runningImages);
-      prince.move(event.key, 5);
+      prince.move(event.key, 3);
     }
   }
 
   if (event.key == " " && isRightKeyPressed) {
-    if (!checkCollisions(-32, 32)) {
+    if (!checkCollisions(-40, 40)) {
       prince.jump(true);
       prince.setAnimation(jumpImages);
     }
   } else if (event.key == " ") {
-    if (!checkCollisions(0, 32)) {
+    if (!checkCollisions(0, 40)) {
       prince.setAnimation(jumpImages);
       prince.jump();
     }
@@ -242,7 +243,7 @@ document.addEventListener("keydown", (event) => {
       );
       const relativeX = currentEnemy.x - prince.x;
 
-      if (relativeX > 0 && relativeX <= 32 && distance < nearestDistance) {
+      if (relativeX > 0 && relativeX <= 10 && distance < nearestDistance) {
         nearestEnemy = currentEnemy;
         nearestDistance = distance;
       }
@@ -266,7 +267,7 @@ document.addEventListener("keyup", (event) => {
   }
 
   if (event.key == " ") {
-    collisonForward = false;
+    // collisonForward = false;
     if (fighting_mode) {
       prince.setAnimation(fightingMode_image);
     } else {
@@ -288,7 +289,7 @@ function animate(timestamp) {
     gameOver();
   }
 
-  collisionBelow = false;
+  // collisionBelow = false;
   for (const enemy of activeEnemies) {
     enemy.updateAnimation("enemy");
     enemy.draw(ctx);
@@ -315,7 +316,7 @@ function animate(timestamp) {
   prince.draw(ctx);
 
   if (!checkCollisions(0, -1)) {
-    prince.y += 0.5;
+    prince.y += 1;
   } else {
     prince.jumping = false;
     prince.velocityY = 0;
