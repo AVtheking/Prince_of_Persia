@@ -62,8 +62,9 @@ export default class Player {
   }
 
   jump(isMoving) {
+    console.log(this.jumping);
     if (!this.jumping) {
-      this.jumping = true;
+      // this.jumping = true;
       this.initialY = this.y;
       this.y -= 40;
       if (isMoving) this.x += 40;

@@ -19,6 +19,7 @@ const Y = 263;
 let isRightKeyPressed = false;
 let fighting_mode = false;
 let lastTimestamp = 0;
+let jumpCount = 0;
 
 let kid = new Image();
 let fighter = new Image();
@@ -138,6 +139,7 @@ function checkCollisions(X, Y) {
       })
     ) {
       isCollision = true;
+
       break;
     }
   }
@@ -186,13 +188,24 @@ document.addEventListener("keydown", (event) => {
 
   if (event.key == " " && isRightKeyPressed) {
     if (!checkCollisions(-40, 40)) {
-      prince.jump(true);
-      prince.setAnimation(jumpImages);
+      if (jumpCount < 2) {
+        prince.jump(true);
+        prince.setAnimation(jumpImages);
+        jumpCount++;
+      } else {
+        prince.jumping = true;
+        jumpCount = 0;
+      }
     }
   } else if (event.key == " ") {
     if (!checkCollisions(0, 40)) {
-      prince.setAnimation(jumpImages);
-      prince.jump();
+      if (jumpCount < 2) {
+        prince.setAnimation(jumpImages);
+        prince.jump();
+        jumpCount++;
+      } else {
+        prince.jumping = true;
+      }
     }
   }
 
@@ -263,7 +276,7 @@ function animate(timestamp) {
     // game_won.play();
     window.location.href = "./end-page.html";
   }
-  console.log(prince.x);
+  // console.log(prince.x);
   if (prince.y >= canvas.height - 20) {
     gameOver();
   }
@@ -298,6 +311,7 @@ function animate(timestamp) {
   } else {
     prince.jumping = false;
     prince.velocityY = 0;
+    jumpCount = 0;
   }
 
   if (prince.jumping) {
@@ -305,6 +319,7 @@ function animate(timestamp) {
     if (prince.y >= prince.initialY) {
       prince.y = prince.initialY;
       prince.jumping = false;
+      jumpCount = 0;
     }
   }
 
