@@ -91,6 +91,7 @@ img{
 }
 
 
+
 .box{
     height: 250px;
     width: 200px;
@@ -98,7 +99,9 @@ img{
    position: absolute;
    top: 30vh;
    left: 30px;
+
    display: block;
+
 }
 .move{
     font-size: 1rem;
@@ -110,6 +113,7 @@ img{
 span{
     color: rgb(93, 161, 161);
     background-color: rgb(2, 2, 2);
+
 }
 
 .health-bar{
@@ -145,4 +149,5 @@ span{
     font-size: 55px;
    
    
+
 }
