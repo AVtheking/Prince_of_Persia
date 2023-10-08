@@ -1,5 +1,5 @@
 import entity from "./entity.js";
-let gameFrame = 0;
+// let gameFrame = 0;
 export default class Player extends entity {
   constructor(x, y, width, height, defaultImages) {
     super();
@@ -13,6 +13,7 @@ export default class Player extends entity {
     this.jumping = false;
     this.initialY = this.y;
     this.health = 500;
+    this.gameFrame = 0;
   }
   draw(ctx) {
     ctx.drawImage(
@@ -27,9 +28,9 @@ export default class Player extends entity {
     // console.log(this.currentFrame);
     // console.log(object);
 
-    if (gameFrame % 40 == 0) this.currentFrame++;
+    if (this.gameFrame % 16 == 0) this.currentFrame++;
 
-    gameFrame++;
+    this.gameFrame++;
 
     if (this.currentFrame > this.animationFrames.length - 1) {
       this.currentFrame = 0;
@@ -72,8 +73,8 @@ export default class Player extends entity {
     if (!this.jumping) {
       this.jumping = true;
       this.initialY = this.y;
-      this.y -= 42;
-      if (isMoving) this.x += 32;
+      this.y -= 40;
+      if (isMoving) this.x += 40;
     }
   }
   attack(target) {
