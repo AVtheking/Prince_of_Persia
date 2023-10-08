@@ -38,6 +38,8 @@ const blockSizeY = 32;
 let collisionBelow = false;
 let collisonForward = false;
 let collisionUp = false;
+let walking_sound = new Audio("../sound/walking2.mp3");
+let fight_sound = new Audio("../sound/fight.mp3");
 
 idleImage.push(kid);
 fightingMode_image.push(fighter);
@@ -49,9 +51,9 @@ fillArray("enemy", 4, enemyImages);
 
 export let prince = new Player(X, Y, 20, 25, idleImage);
 export let enemy = new Player(656, 263, 25, 25, enemyImages);
-export let enemy2 = new Player(400, 263, 25, 25, enemyImages);
+export let enemy2 = new Player(329, 263, 25, 25, enemyImages);
 export let enemy3 = new Player(816, 263, 25, 25, enemyImages);
-export let enemy4 = new Player(400, 263, 25, 25, enemyImages);
+export let enemy4 = new Player(1000, 263, 25, 25, enemyImages);
 
 const activeEnemies = [enemy, enemy2, enemy3, enemy4];
 for (const enemy of activeEnemies) {
@@ -111,11 +113,31 @@ function calculateDistance(x1, y1, x2, y2) {
   const dy = y1 - y2;
   return Math.sqrt(dx * dx + dy * dy);
 }
+function isEnemyInFrontOfPrince(distanceThreshold) {
+  for (const enemy of activeEnemies) {
+    const distance = calculateDistance(prince.x, prince.y, enemy.x, enemy.y);
+
+    // Calculate relative X position
+    const relativeX = enemy.x - prince.x;
+
+    if (
+      relativeX > 0 &&
+      relativeX <= distanceThreshold &&
+      distance <= distanceThreshold
+    ) {
+      return true; // An enemy is in front of the prince
+    }
+  }
+  return false; // No enemy in front of the prince
+}
 
 //Movements
 document.addEventListener("keydown", (event) => {
   if (event.key == "ArrowRight") {
-    if (!checkCollisions(-5, 0)) {
+    if (!checkCollisions(-5, 0) && !isEnemyInFrontOfPrince(10)) {
+      walking_sound.pause();
+      walking_sound.currentTime = 0;
+      walking_sound.play();
       isRightKeyPressed = true;
       prince.setAnimation(runningImages);
       prince.move(event.key, 5);
@@ -149,6 +171,10 @@ document.addEventListener("keydown", (event) => {
   }
 
   if (event.key == "x" && fighting_mode) {
+    fight_sound.pause();
+    fight_sound.currentTime = 0;
+    fight_sound.play();
+
     let nearestEnemy = null;
     let nearestDistance = Infinity;
     // const allEnemies = [enemy, enemy2, enemy3, enemy4];
@@ -203,7 +229,7 @@ function animate(timestamp) {
 
   collisionBelow = false;
   for (const enemy of activeEnemies) {
-    enemy.updateAnimation();
+    enemy.updateAnimation("enemy");
     enemy.draw(ctx);
 
     if (enemy.health <= 0) {
@@ -213,7 +239,7 @@ function animate(timestamp) {
       }
     }
   }
-  prince.updateAnimation();
+  prince.updateAnimation("prince");
   for (const enemy of activeEnemies) {
     const distance = calculateDistance(prince.x, prince.y, enemy.x, enemy.y);
 
@@ -221,7 +247,7 @@ function animate(timestamp) {
     const relativeX = enemy.x - prince.x;
 
     if (relativeX > 0 && relativeX <= 10 && distance <= 10) {
-      prince.health -= 2;
+      prince.health -= 0.1;
     }
   }
 
