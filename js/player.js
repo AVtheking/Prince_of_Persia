@@ -76,12 +76,10 @@ export default class Player extends entity {
     }
   }
   attack(target) {
-    // Reduce the target's health
+ sound
     if (target instanceof Player) {
-      target.health -= 5; // Reduce enemy's health by 5
+      target.health -= 5;
     }
 
-    // Reduce the player's health (assuming player has a health property)
-    // this.health -= 2; // Reduce the player's health by 2
   }
 }
