@@ -221,9 +221,7 @@ function animate(timestamp) {
     const relativeX = enemy.x - prince.x;
 
     if (relativeX > 0 && relativeX <= 10 && distance <= 10) {
- sound
       prince.health -= 2;
-
     }
   }
 
