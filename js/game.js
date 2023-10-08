@@ -12,19 +12,13 @@ let gameOverScreen = document.getElementById("gameOverScreen");
 let box = document.getElementById("box");
 let health_bar = document.getElementById("health-bar");
 
-const frameCount = 12;
 const frameInterval = 100;
 const X = 137;
 const Y = 263;
 
 let isRightKeyPressed = false;
 let fighting_mode = false;
-let currentFrame = 1;
 let lastTimestamp = 0;
-let prince_health = 50;
-let enemy_health = 5;
-let enemy2_health = 5;
-let enemy3_health = 5;
 
 let kid = new Image();
 let fighter = new Image();
@@ -44,6 +38,7 @@ const enemyImages = [];
 let walking_sound = new Audio("../Sound/walking2.mp3");
 let fight_sound = new Audio("../Sound/fight.mp3");
 let game_over = new Audio("../Sound/ending.wav");
+let game_won = new Audio("../Sound/game_won.mp3");
 
 idleImage.push(kid);
 fightingMode_image.push(fighter);
@@ -58,7 +53,7 @@ export let enemy = new Player(656, 263, 25, 25, enemyImages);
 export let enemy2 = new Player(329, 263, 25, 25, enemyImages);
 export let enemy3 = new Player(816, 263, 25, 25, enemyImages);
 export let enemy5 = new Player(1200, 263, 25, 25, enemyImages);
-export let enemy6 = new Player(1500, 263, 25, 25, enemyImages);
+export let enemy6 = new Player(1450, 263, 25, 25, enemyImages);
 export let enemy7 = new Player(1650, 263, 25, 25, enemyImages);
 
 let activeEnemies = [enemy, enemy2, enemy3, enemy5, enemy6, enemy7];
@@ -92,14 +87,8 @@ function fillArray(folder, count, images) {
     images.push(image);
   }
 }
-function resetPrincePosition() {
-  prince.x = X;
-  prince.y = Y;
-}
 
 function gameOver() {
-  // game_over.pause();
-  // game_over.currentTime = 0;
   game_over.play();
   canvas.style.display = "none";
   box.style.display = "none";
@@ -111,17 +100,6 @@ function gameOver() {
   paragraph.style.color = "white";
   document.addEventListener("keypress", (event) => {
     location.reload();
-    // prince.health = 500;
-    // gameOverScreen.style.display = "none";
-    // canvas.style.display = "block";
-    // box.style.display = "block";
-    // health_bar.style.display = "block";
-    // ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // hearts[0].style.opacity = 1;
-    // hearts[1].style.opacity = 1;
-    // hearts[2].style.opacity = 1;
-    // hearts[3].style.opacity = 1;
-    // hearts[4].style.opacity = 1;
   });
 }
 function damage() {
@@ -282,6 +260,7 @@ document.addEventListener("keyup", (event) => {
 function animate(timestamp) {
   // ctx.clearRect(0, 0, canvas.width, canvas.height);
   if (prince.x >= 259) {
+    // game_won.play();
     window.location.href = "./end-page.html";
   }
   console.log(prince.x);
@@ -305,7 +284,6 @@ function animate(timestamp) {
   for (const enemy of activeEnemies) {
     const distance = calculateDistance(prince.x, prince.y, enemy.x, enemy.y);
 
-    // Calculate relative X position
     const relativeX = enemy.x - prince.x;
 
     if (relativeX > 0 && relativeX <= 10 && distance <= 10) {
