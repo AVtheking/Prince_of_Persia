@@ -45,8 +45,8 @@ const blockSizeY = 32;
 let collisionBelow = false;
 let collisonForward = false;
 let collisionUp = false;
-let walking_sound = new Audio("../sound/walking2.mp3");
-let fight_sound = new Audio("../sound/fight.mp3");
+let walking_sound = new Audio("../Sound/walking2.mp3");
+let fight_sound = new Audio("../Sound/fight.mp3");
 
 idleImage.push(kid);
 fightingMode_image.push(fighter);
@@ -281,7 +281,7 @@ document.addEventListener("keyup", (event) => {
 function animate(timestamp) {
   // ctx.clearRect(0, 0, canvas.width, canvas.height);
   if (prince.x >= 259) {
-    window.location.href = "./end-page.html";
+    window.location.href = "./End-page.html";
   }
   console.log(prince.x);
   if (prince.y >= canvas.height - 20) {

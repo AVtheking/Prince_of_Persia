@@ -1,6 +1,6 @@
 document.getElementById("button").addEventListener("click", navigate, true);
 
-let gameStartSound = new Audio("../sound/start.mpeg");
+let gameStartSound = new Audio("../Sound/start.mpeg");
 
 function navigate() {
   gameStartSound.play();
