@@ -79,8 +79,29 @@ a{
     background-color: rgb(25, 24, 24);
 }
 
-p{
+.intro{
     color: rgb(210, 97, 84);
     font-size: 3rem;
     padding-left: 30px;
+}
+
+/*box*/
+.box{
+    height: 250px;
+    width: 200px;
+    background-color: rgb(25, 24, 23);
+   position: absolute;
+   top: 30vh;
+   left: 30px;
+}
+.move{
+    font-size: 1rem;
+    padding: 15px;
+    color: rgb(196, 191, 185);
+
+}
+
+span{
+    color: rgb(93, 161, 161);
+    background-color: rgb(2, 2, 2);
 }
