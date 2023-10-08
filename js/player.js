@@ -76,8 +76,10 @@ export default class Player extends entity {
     }
   }
   attack(target) {
+ sound
     if (target instanceof Player) {
       target.health -= 5;
     }
+
   }
 }
