@@ -23,10 +23,11 @@ export default class Player extends entity {
       this.height
     );
   }
-  updateAnimation() {
+  updateAnimation(object) {
     // console.log(this.currentFrame);
+    console.log(object);
 
-    if (gameFrame % 50 == 0) this.currentFrame++;
+    if (gameFrame % 6 == 0) this.currentFrame++;
 
     gameFrame++;
 
