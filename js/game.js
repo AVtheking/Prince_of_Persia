@@ -281,7 +281,7 @@ document.addEventListener("keyup", (event) => {
 function animate(timestamp) {
   // ctx.clearRect(0, 0, canvas.width, canvas.height);
   if (prince.x >= 259) {
-    window.location.href = "./End-page.html";
+    window.location.href = "./end-page.html";
   }
   console.log(prince.x);
   if (prince.y >= canvas.height - 20) {
