@@ -245,7 +245,7 @@ document.addEventListener("keydown", (event) => {
       );
       const relativeX = currentEnemy.x - prince.x;
 
-      if (relativeX > 0 && relativeX <= 15 && distance < nearestDistance) {
+      if (relativeX > 0 && relativeX <= 14 && distance < nearestDistance) {
         nearestEnemy = currentEnemy;
         nearestDistance = distance;
       }
