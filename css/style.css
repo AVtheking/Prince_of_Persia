@@ -15,6 +15,25 @@ body{
     left: 50%;
 }
 
+#audio{
+    display: flex;
+    background-color: rgb(15, 15, 15);
+    height: 30px;
+    gap: 10px;
+    padding: 10px;
+}
+
+#audio-on,#audio-off{
+    background-color: bisque;
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+
+
 
 #first{
     height: 500px;
@@ -22,7 +41,7 @@ body{
     background-color: rgb(182, 114, 69);
     position: absolute;
     left: 25%;
-    top: 15%;
+    top: 10%;
 }
 
 img{
@@ -30,9 +49,37 @@ img{
     width: 680px;
     margin: 10px;
 }
-.button{
+#button{
     top: 35%;
     background-color: burlywood;
-    color: cadetblue;
+    color: rgb(24, 39, 40);
+    font-size: 2rem;
     display: inline;
+    position: absolute;
+    top: 600px;
+    left: 680px;
+    height: 35px;
+    width: 95px;
+    padding: 10px;
+    
+    
+}
+a{
+    text-decoration: none;
+}
+
+#one{
+    border: 50px solid rgb(114, 77, 45);
+    height: 85vh;
+    width: 70vw;
+    margin-left: 25px;
+    position: absolute;
+    left: 140px;
+    background-color: rgb(25, 24, 24);
+}
+
+p{
+    color: rgb(210, 97, 84);
+    font-size: 3rem;
+    padding-left: 30px;
 }

@@ -3,13 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D</title>
+    <title>intro</title>
     <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-    <div id="first">
-        <div><img src="./images\front.jpg" alt="main-page"></div>
-        
+    <div id="audio">
+        <source src="./Sound/start.mpeg" type="audio/mpeg" >
+    <div id="audio-on">ON</div>
+    <div id="audio-off">OFF</div>
     </div>
+    <script>
+      
+     const audio = document.getElementById('audio');
+     const playButton = document.getElementById('audio-on');
+     const pauseButton = document.getElementById('audio-off');
+
+
+     playButton.addEventListener('click', () => {
+    audio.play(); // Start playing the audio
+});
+
+     pauseButton.addEventListener('click', () => {
+    audio.pause(); 
+});
+
+    </script>
+
+   
+
+    
+    <div id="first">
+        <div><img src="./images/front.jpg" alt="main-page"></div>
+    </div>
+    <div id="button"><a href="./index.html">START</a></div>
 </body>
 </html>
