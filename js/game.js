@@ -39,7 +39,8 @@ const enemyImages = [];
 let walking_sound = new Audio("../Sound/walking2.mp3");
 let fight_sound = new Audio("../Sound/fight.mp3");
 let game_over = new Audio("../Sound/ending.wav");
-let game_won = new Audio("../Sound/game_won.mp3");
+let enemy_death = new Audio("../Sound/death.wav");
+let sword = new Audio("../Sound/sword2.wav");
 
 idleImage.push(kid);
 fightingMode_image.push(fighter);
@@ -57,7 +58,7 @@ export let enemy5 = new Player(1200, 263, 25, 25, enemyImages);
 export let enemy6 = new Player(1450, 263, 25, 25, enemyImages);
 export let enemy7 = new Player(1650, 263, 25, 25, enemyImages);
 export let enemy8 = new Player(1800, 263, 25, 25, enemyImages);
-export let enemy9 = new Player(2046, 166, 25, 25, enemyImages);
+export let enemy9 = new Player(2060, 166, 25, 25, enemyImages);
 
 let activeEnemies = [
   enemy,
@@ -115,7 +116,7 @@ function gameOver() {
   });
 }
 function damage() {
-  prince.health -= 1;
+  prince.health -= 2;
   if (prince.health == 400) {
     hearts[4].style.opacity = 0;
   }
@@ -168,7 +169,7 @@ function isEnemyInFrontOfPrince(distanceThreshold) {
     const relativeX = enemy.x - prince.x;
 
     if (
-      relativeX > 0 &&
+      relativeX > -20 &&
       relativeX <= distanceThreshold &&
       distance <= distanceThreshold
     ) {
@@ -222,6 +223,9 @@ document.addEventListener("keydown", (event) => {
 
   if (event.key == "z" && !fighting_mode) {
     fighting_mode = true;
+    sword.pause();
+    sword.currentTime = 0;
+    sword.play();
     prince.setAnimation(fightingMode_image);
   } else if (event.key == "z" && fighting_mode) {
     fighting_mode = false;
@@ -245,7 +249,7 @@ document.addEventListener("keydown", (event) => {
       );
       const relativeX = currentEnemy.x - prince.x;
 
-      if (relativeX > 0 && relativeX <= 14 && distance < nearestDistance) {
+      if (relativeX > -20 && relativeX <= 14 && distance < nearestDistance) {
         nearestEnemy = currentEnemy;
         nearestDistance = distance;
       }
@@ -294,23 +298,24 @@ function animate(timestamp) {
 
   // collisionBelow = false;
   for (const enemy of activeEnemies) {
-    enemy.updateAnimation("enemy");
+    enemy.updateAnimation();
     enemy.draw(ctx);
 
     if (enemy.health <= 0) {
       const index = activeEnemies.indexOf(enemy);
       if (index !== -1) {
+        enemy_death.play();
         activeEnemies.splice(index, 1);
       }
     }
   }
-  prince.updateAnimation("prince");
+  prince.updateAnimation();
   for (const enemy of activeEnemies) {
     const distance = calculateDistance(prince.x, prince.y, enemy.x, enemy.y);
 
     const relativeX = enemy.x - prince.x;
 
-    if (relativeX > 0 && relativeX <= 14 && distance <= 14) {
+    if (relativeX > -20 && relativeX <= 14 && distance <= 14) {
       damage();
     }
   }
@@ -324,15 +329,6 @@ function animate(timestamp) {
     prince.velocityY = 0;
     jumpCount = 0;
   }
-
-  // if (prince.jumping) {
-  //   prince.y += 0.1;
-  //   if (prince.y >= prince.initialY) {
-  //     prince.y = prince.initialY;
-  //     prince.jumping = false;
-  //     jumpCount = 0;
-  //   }
-  // }
 
   if (timestamp - lastTimestamp >= frameInterval) {
     lastTimestamp = timestamp;

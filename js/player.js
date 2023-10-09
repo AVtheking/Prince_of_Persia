@@ -21,7 +21,7 @@ export default class Player {
     );
   }
   updateAnimation() {
-    if (this.gameFrame % 16 == 0) this.currentFrame++;
+    if (this.gameFrame % 10 == 0) this.currentFrame++;
 
     this.gameFrame++;
 
@@ -31,7 +31,7 @@ export default class Player {
   }
   setAnimation(images) {
     this.animationFrames = images;
-    this.currentFrame = 0;
+    // this.currentFrame = 0;
   }
   move(key, speed) {
     const canvasWidth = canvas.width;
