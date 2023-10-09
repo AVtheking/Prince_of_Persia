@@ -1,5 +1,7 @@
 // import { collisionMap } from "./main.js";
 import Boundary, { collisionMap, objectCollision } from "./boundary.js";
+import { WIDTH } from "./main.js";
+// import { x } from "./main.js";
 import Player from "./player.js";
 
 const canvas = document.getElementById("canvas");
@@ -182,19 +184,19 @@ function isEnemyInFrontOfPrince(distanceThreshold) {
 //Movements
 document.addEventListener("keydown", (event) => {
   if (event.key == "ArrowRight") {
-    if (!checkCollisions(-3, 0) && !isEnemyInFrontOfPrince(10)) {
+    if (!checkCollisions(-2, 0) && !isEnemyInFrontOfPrince(10)) {
       walking_sound.pause();
       walking_sound.currentTime = 0;
       walking_sound.play();
       isRightKeyPressed = true;
       prince.setAnimation(runningImages);
-      prince.move(event.key, 3);
+      prince.move(event.key, 2);
     }
   } else if (event.key == "ArrowLeft") {
-    if (!checkCollisions(3, 0)) {
+    if (!checkCollisions(2, 0)) {
       isRightKeyPressed = true;
       prince.setAnimation(runningImages);
-      prince.move(event.key, 3);
+      prince.move(event.key, 2);
     }
   }
 
@@ -287,7 +289,7 @@ document.addEventListener("keyup", (event) => {
 
 function animate(timestamp) {
   // ctx.clearRect(0, 0, canvas.width, canvas.height);
-  if (prince.x >= 259) {
+  if (prince.x >= 259 && WIDTH == -2200) {
     // game_won.play();
     window.location.href = "./end-page.html";
   }
