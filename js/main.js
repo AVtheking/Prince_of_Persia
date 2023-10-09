@@ -7,6 +7,7 @@ import {
   enemy6,
   enemy7,
   enemy8,
+  enemy9,
   prince,
 } from "./game.js";
 
@@ -54,6 +55,7 @@ function animate() {
     enemy6.x -= gamespeed;
     enemy7.x -= gamespeed;
     enemy8.x -= gamespeed;
+    enemy9.x -= gamespeed;
     gamespeed += 1;
   }
 
