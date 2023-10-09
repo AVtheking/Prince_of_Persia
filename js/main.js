@@ -7,7 +7,6 @@ import {
   enemy6,
   enemy7,
   enemy8,
-  enemy9,
   prince,
 } from "./game.js";
 
@@ -20,30 +19,30 @@ let gamespeed = 0;
 const backgroundLayer1 = new Image();
 backgroundLayer1.src = "./images/prince-of persia-map.png";
 
-let x = 0;
+export let WIDTH = 0;
 
 const movables = [...boundaries];
 
 function animate() {
   ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-  ctx.drawImage(backgroundLayer1, x, 0);
+  ctx.drawImage(backgroundLayer1, WIDTH, 0);
   // console.log(x);
   boundaries.forEach((boundary) => {
     boundary.drawRect();
   });
 
   if (canvas.width - prince.x <= 150) {
-    gamespeed = 50;
+    gamespeed = 1;
   } else if (prince.x <= 50) {
-    gamespeed = -50;
+    gamespeed = -1;
   } else {
     gamespeed = 0;
   }
 
-  if (x == -2200) x = -2200;
+  if (WIDTH == -2200) WIDTH = -2200;
   else {
     prince.x -= gamespeed;
-    x -= gamespeed;
+    WIDTH -= gamespeed;
     movables.forEach((movable) => {
       movable.position.x -= gamespeed;
     });
@@ -55,7 +54,7 @@ function animate() {
     enemy6.x -= gamespeed;
     enemy7.x -= gamespeed;
     enemy8.x -= gamespeed;
-    enemy9.x -= gamespeed;
+    gamespeed += 1;
   }
 
   requestAnimationFrame(animate);
