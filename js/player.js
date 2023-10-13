@@ -61,13 +61,14 @@ export default class Player {
     }
   }
 
-  jump(isMoving) {
+  jump(Moving) {
     console.log(this.jumping);
     if (!this.jumping) {
       // this.jumping = true;
       this.initialY = this.y;
       this.y -= 40;
-      if (isMoving) this.x += 40;
+      if (Moving == "right") this.x += 40;
+      else if (Moving == "left") this.x -= 40;
     }
   }
   attack(target) {
