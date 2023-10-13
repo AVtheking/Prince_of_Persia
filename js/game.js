@@ -19,6 +19,7 @@ const X = 137;
 const Y = 263;
 
 let isRightKeyPressed = false;
+let isLeftkeyPressed = false;
 let fighting_mode = false;
 let lastTimestamp = 0;
 let jumpCount = 0;
@@ -26,10 +27,14 @@ let jumpCount = 0;
 let kid = new Image();
 let fighter = new Image();
 let fight = new Image();
+let kid_left = new Image();
+let fight_left = new Image();
 
 kid.src = "./images/idle/idle2.png";
 fighter.src = "./images/sword.png";
 fight.src = "./images/12.png";
+kid_left.src = "./images/idle/idle3.png";
+fight_left.src = "./images/sword_left.png";
 
 const runningImages = [];
 const idleImage = [];
@@ -37,6 +42,10 @@ const jumpImages = [];
 const fightingImages = [];
 const fightingMode_image = [];
 const enemyImages = [];
+const running_left = [];
+const leftIdle = [];
+const left_jump = [];
+const left_fightingMode_Image = [];
 
 let walking_sound = new Audio("../Sound/walking2.mp3");
 let fight_sound = new Audio("../Sound/fight.mp3");
@@ -47,10 +56,14 @@ let sword = new Audio("../Sound/sword2.wav");
 idleImage.push(kid);
 fightingMode_image.push(fighter);
 fightingImages.push(fight);
+leftIdle.push(kid_left);
+left_fightingMode_Image.push(fight_left);
 
 fillArray("running", 12, runningImages);
 fillArray("jump", 4, jumpImages);
 fillArray("enemy", 4, enemyImages);
+fillArray("running_left", 12, running_left);
+fillArray("jump_left", 4, left_jump);
 
 export let prince = new Player(X, Y, 20, 25, idleImage);
 export let enemy = new Player(656, 263, 25, 25, enemyImages);
@@ -194,8 +207,8 @@ document.addEventListener("keydown", (event) => {
     }
   } else if (event.key == "ArrowLeft") {
     if (!checkCollisions(2, 0)) {
-      isRightKeyPressed = true;
-      prince.setAnimation(runningImages);
+      isLeftkeyPressed = true;
+      prince.setAnimation(running_left);
       prince.move(event.key, 2);
     }
   }
@@ -203,8 +216,19 @@ document.addEventListener("keydown", (event) => {
   if (event.key == " " && isRightKeyPressed) {
     if (!checkCollisions(-40, 40)) {
       if (jumpCount < 2) {
-        prince.jump(true);
+        prince.jump("right");
         prince.setAnimation(jumpImages);
+        jumpCount++;
+      } else {
+        prince.jumping = true;
+        jumpCount = 0;
+      }
+    }
+  } else if (event.key == " " && isLeftkeyPressed) {
+    if (!checkCollisions(40, 40)) {
+      if (jumpCount < 2) {
+        prince.jump("left");
+        prince.setAnimation(left_jump);
         jumpCount++;
       } else {
         prince.jumping = true;
@@ -264,7 +288,7 @@ document.addEventListener("keydown", (event) => {
 });
 
 document.addEventListener("keyup", (event) => {
-  if (event.key == "ArrowRight" || event.key == "ArrowLeft") {
+  if (event.key == "ArrowRight") {
     isRightKeyPressed = false;
 
     if (fighting_mode) {
@@ -273,13 +297,29 @@ document.addEventListener("keyup", (event) => {
       prince.setAnimation(idleImage);
     }
   }
+  if (event.key == "ArrowLeft") {
+    isLeftkeyPressed = false;
+
+    if (fighting_mode) {
+      prince.setAnimation(left_fightingMode_Image);
+    } else {
+      prince.setAnimation(leftIdle);
+    }
+  }
 
   if (event.key == " ") {
     // collisonForward = false;
-    if (fighting_mode) {
+    if (fighting_mode && isRightKeyPressed) {
+      prince.setAnimation(fightingMode_image);
+    } else if (fighting_mode && isLeftkeyPressed) {
+      prince.setAnimation(left_fightingMode_Image);
+    } else if (fighting_mode) {
       prince.setAnimation(fightingMode_image);
     } else {
-      prince.setAnimation(idleImage);
+      if (isLeftkeyPressed) prince.setAnimation(leftIdle);
+      else {
+        prince.setAnimation(idleImage);
+      }
     }
   }
   if (event.key == "x" && fighting_mode) {
